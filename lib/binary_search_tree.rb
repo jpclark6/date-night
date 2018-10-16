@@ -41,6 +41,7 @@ class BinarySearchTree
 
   def include?(value)
     node = @root
+    return false if node == nil
 
     loop do
       if node.value == value
@@ -137,6 +138,25 @@ class BinarySearchTree
         end
       end
     end
-    return sorted
+    sorted
+  end
+
+  def load(file)
+    total = 0
+    File.open(file, "r") do |f|
+      f.each_line do |line|
+        value = line.split(", ")[0].to_i
+        title = line.split(", ")[1].chomp
+        unless include?(value)
+          insert(value, title)
+          total += 1
+        end
+      end
+    end
+    total
+  end
+
+  def health(level)
+
   end
 end

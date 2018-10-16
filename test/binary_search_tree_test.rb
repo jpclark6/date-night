@@ -1,3 +1,4 @@
+require './test/test_helper'
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/binary_search_tree'
@@ -69,5 +70,27 @@ class BinarySearchTreeTest < Minitest::Test
     expected = [{"Johnny English"=>16}, {"Hannibal Buress: Animal Furnace"=>50},
       {"Bill & Ted's Excellent Adventure"=>61}, {"Sharknado 3"=>92}]
     assert_equal expected, tree.sort
+  end
+
+  def test_it_can_load_files
+    tree = BinarySearchTree.new
+    assert_equal 99, tree.load("./movies.txt")
+  end
+
+  def test_it_can_find_health
+    tree = BinarySearchTree.new
+    tree.insert(98, "Animals United")
+    tree.insert(58, "Armageddon")
+    tree.insert(36, "Bill & Ted's Bogus Journey")
+    tree.insert(93, "Bill & Ted's Excellent Adventure")
+    tree.insert(86, "Charlie's Angels")
+    tree.insert(38, "Charlie's Country")
+    tree.insert(69, "Collateral Damage")
+    expected_0 = [[98, 7, 100]]
+    expected_1 = [[58, 6, 85]]
+    expected_2 = [[36, 2, 28], [93, 3, 42]]
+    assert_equal expected_0, tree.health(0)
+    assert_equal expected_1, tree.health(1)
+    assert_equal expected_2, tree.health(2)
   end
 end
