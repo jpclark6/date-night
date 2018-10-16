@@ -9,7 +9,8 @@ class BinarySearchTree
   def insert(value, title)
     if @root == nil
       @root = Node.new(value, title)
-      return 0
+      @root.parent = nil
+      return @root.level = 0
     else
       i = 1
       node = @root
@@ -22,6 +23,7 @@ class BinarySearchTree
           else
             node.left = Node.new(value, title)
             node.left.parent = node
+            node.left.level = i
             next_location_empty = true
           end
         else
@@ -31,6 +33,7 @@ class BinarySearchTree
           else
             node.right = Node.new(value, title)
             node.right.parent = node
+            node.right.level = i
             next_location_empty = true
           end
         end
@@ -117,28 +120,28 @@ class BinarySearchTree
     node = @root
     sorted = []
 
-    temp_i = 0
-
     until node.value == max.value
-      temp_i += 1
-      if temp_i > 1000
-        return "FAILED"
-      end
-
-      #  sorted << {node.title => node.value}
-
       if node.left != nil
         node = node.left
       else
-        if node.right != nil
-          node = node.right
-        else
-          sorted << {node.title => node.value}
-          node = node.parent
-        end
+        sorted << {node.title => node.value}
+        node = delete_node(node)
       end
     end
+    sorted << {node.title => node.value}
     sorted
+  end
+
+  def delete_node(node)
+    if node.right == nil
+      node = node.parent
+      node.left = nil
+    else
+      node.right.parent = node.parent
+      node = node.right
+      node.right = nil
+    end
+    node
   end
 
   def load(file)
@@ -157,6 +160,110 @@ class BinarySearchTree
   end
 
   def health(level)
+    # find all nodes on level, create that many element array
+    active_nodes = [@root]
+    level.times do |i|
+      temp_nodes = active_nodes.clone
+      temp_nodes.each do |node|
+        active_nodes << node.left unless node.left == nil
+        active_nodes << node.right unless node.right == nil
+        active_nodes.shift
+      end
+    end
 
+    health_report = []
+    # 1st value in each array is the value at node
+    # 2nd value find all child nodes including node
+    # 3rd value = 2nd value / total nodes
+    active_nodes.each do |node|
+      health_report << [node.value, children(node.value) + 1, 100 * (children(node.value) + 1) / (children(@root.value) + 1)]
+    end
+    health_report
   end
+
+  def find_node(value)
+    node = @root
+
+    loop do
+      if node.value == value
+        return node
+      end
+      if value < node.value
+        if node.left != nil
+          node = node.left
+        else
+          return false
+        end
+      else
+        if node.right != nil
+          node = node.right
+        else
+          return false
+        end
+      end
+    end
+  end
+
+  def children(value)
+    active_children = [find_node(value)]
+    total_children = 0
+    until active_children.length == 0
+      temp_children = active_children.clone
+      temp_children.each do |node|
+        unless node.left == nil
+          active_children << node.left
+          total_children += 1
+        end
+        unless node.right == nil
+          active_children << node.right
+          total_children += 1
+        end
+        active_children.shift
+      end
+    end
+    total_children
+  end
+
+  def leaves
+    active_children = [@root]
+    total_leaves = 0
+    until active_children.length == 0
+      temp_children = active_children.clone
+      temp_children.each do |node|
+        unless node.left == nil
+          active_children << node.left
+        end
+        unless node.right == nil
+          active_children << node.right
+        end
+        if node.right == nil && node.left == nil
+          total_leaves += 1
+        end
+        active_children.shift
+      end
+    end
+    total_leaves
+  end
+
+  def height
+    active_children = [@root]
+    max_height = 0
+    until active_children.length == 0
+      temp_children = active_children.clone
+      temp_children.each do |node|
+        unless node.left == nil
+          active_children << node.left
+        end
+        unless node.right == nil
+          active_children << node.right
+        end
+        if node.level > max_height
+          max_height = node.level
+        end
+        active_children.shift
+      end
+    end
+    max_height
+  end
+
 end

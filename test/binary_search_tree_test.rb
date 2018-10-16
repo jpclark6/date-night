@@ -65,9 +65,12 @@ class BinarySearchTreeTest < Minitest::Test
     tree = BinarySearchTree.new
     ex = tree.insert(61, "Bill & Ted's Excellent Adventure")
     ex = tree.insert(16, "Johnny English")
+    ex = tree.insert(15, "Johnny English")
+    ex = tree.insert(14, "Johnny English")
     ex = tree.insert(92, "Sharknado 3")
     ex = tree.insert(50, "Hannibal Buress: Animal Furnace")
-    expected = [{"Johnny English"=>16}, {"Hannibal Buress: Animal Furnace"=>50},
+    expected = [{"Johnny English"=>14}, {"Johnny English"=>15},
+      {"Johnny English"=>16}, {"Hannibal Buress: Animal Furnace"=>50},
       {"Bill & Ted's Excellent Adventure"=>61}, {"Sharknado 3"=>92}]
     assert_equal expected, tree.sort
   end
@@ -92,5 +95,33 @@ class BinarySearchTreeTest < Minitest::Test
     assert_equal expected_0, tree.health(0)
     assert_equal expected_1, tree.health(1)
     assert_equal expected_2, tree.health(2)
+  end
+
+  def test_it_can_find_qty_of_children
+    tree = BinarySearchTree.new
+    ex = tree.insert(61, "Bill & Ted's Excellent Adventure")
+    ex = tree.insert(16, "Johnny English")
+    ex = tree.insert(92, "Sharknado 3")
+    ex = tree.insert(50, "Hannibal Buress: Animal Furnace")
+    assert_equal 3, tree.children(61)
+    assert_equal 1, tree.children(16)
+  end
+
+  def test_it_can_find_qty_of_leaves
+    tree = BinarySearchTree.new
+    ex = tree.insert(61, "Bill & Ted's Excellent Adventure")
+    ex = tree.insert(16, "Johnny English")
+    ex = tree.insert(92, "Sharknado 3")
+    ex = tree.insert(50, "Hannibal Buress: Animal Furnace")
+    assert_equal 2, tree.leaves
+  end
+
+  def test_it_can_find_height_of_tree
+    tree = BinarySearchTree.new
+    ex = tree.insert(61, "Bill & Ted's Excellent Adventure")
+    ex = tree.insert(16, "Johnny English")
+    ex = tree.insert(92, "Sharknado 3")
+    ex = tree.insert(50, "Hannibal Buress: Animal Furnace")
+    assert_equal 2, tree.height
   end
 end
