@@ -1,13 +1,13 @@
 class Node
   attr_accessor :left, :right, :level, :value, :title, :parent
 
-  def initialize(value, title)
+  def initialize(value, title, parent = nil, level = 0, left = nil, right = nil)
     @title = title
     @value = value
-    @parent = nil
-    @left = nil
-    @right = nil
-    @level = nil
+    @parent = parent
+    @left = left
+    @right = right
+    @level = level
   end
 
   def info

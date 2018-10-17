@@ -8,38 +8,37 @@ class BinarySearchTree
 
   def insert(value, title)
     if @root == nil
-      @root = Node.new(value, title)
-      @root.parent = nil
-      return @root.level = 0
+      @root = Node.new(value, title, nil, 0)
+      return @root.level
     else
       i = 1
       node = @root
       next_location_empty = false
       until next_location_empty
         if value < node.value
-          if node.left != nil
+          unless node_empty?(node.left)
             node = node.left
             i += 1
           else
-            node.left = Node.new(value, title)
-            node.left.parent = node
-            node.left.level = i
+            node.left = Node.new(value, title, node, i)
             next_location_empty = true
           end
         else
-          if node.right != nil
+          unless node_empty?(node.right)
             node = node.right
             i += 1
           else
-            node.right = Node.new(value, title)
-            node.right.parent = node
-            node.right.level = i
+            node.right = Node.new(value, title, node, i)
             next_location_empty = true
           end
         end
       end
     end
     return i
+  end
+
+  def node_empty?(node)
+    node == nil
   end
 
   def include?(value)
