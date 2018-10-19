@@ -7,34 +7,25 @@ class BinarySearchTree
   end
 
   def insert(value, title)
-    if @root == nil
-      @root = Node.new(value, title, nil, 0)
-      return @root.level
-    else
-      i = 1
-      node = @root
-      next_location_empty = false
-      until next_location_empty
-        if value < node.value
-          unless node_empty?(node.left)
-            node = node.left
-            i += 1
-          else
-            node.left = Node.new(value, title, node, i)
-            next_location_empty = true
-          end
-        else
-          unless node_empty?(node.right)
-            node = node.right
-            i += 1
-          else
-            node.right = Node.new(value, title, node, i)
-            next_location_empty = true
-          end
-        end
-      end
+    node = @root
+    i = 0
+    while node != nil
+      parent_node = node
+      node = value < node.value ? node.left : node.right
+      i += 1
     end
-    return i
+
+    if has_root?
+      parent_node.left = Node.new(value, title, parent_node, i) if value < parent_node.value
+      parent_node.right = Node.new(value, title, parent_node, i) if value >= parent_node.value
+    else
+      @root = Node.new(value, title, nil, i)
+    end
+    i
+  end
+
+  def has_root?
+    @root != nil
   end
 
   def node_empty?(node)
@@ -43,76 +34,39 @@ class BinarySearchTree
 
   def include?(value)
     node = @root
-    return false if node == nil
-
-    loop do
+    while node != nil
       if node.value == value
         return true
       end
-      if value < node.value
-        if node.left != nil
-          node = node.left
-        else
-          return false
-        end
-      else
-        if node.right != nil
-          node = node.right
-        else
-          return false
-        end
-      end
+      node = value < node.value ? node.left : node.right
     end
+    false
   end
 
   def depth_of(value)
     node = @root
-
     i = 0
-    loop do
-      if node.value == value
-        return i
-      end
-      if value < node.value
-        if node.left != nil
-          node = node.left
-          i += 1
-        else
-          return false
-        end
-      else
-        if node.right != nil
-          node = node.right
-          i += 1
-        else
-          return false
-        end
-      end
+    until node.value == value
+      node = value < node.value ? node.left : node.right
+      i += 1
     end
+    i
   end
 
   def max
     node = @root
-
-    loop do
-      if node.right != nil
-        node = node.right
-      else
-        return node
-      end
+    while node.right
+      node = node.right
     end
+    node
   end
 
   def min
     node = @root
-
-    loop do
-      if node.left != nil
-        node = node.left
-      else
-        return node
-      end
+    while node.left
+      node = node.left
     end
+    node
   end
 
   def sort
@@ -120,7 +74,7 @@ class BinarySearchTree
     sorted = []
 
     until node.value == max.value
-      if node.left != nil
+      if node.left
         node = node.left
       else
         sorted << {node.title => node.value}
@@ -159,7 +113,6 @@ class BinarySearchTree
   end
 
   def health(level)
-    # find all nodes on level, create that many element array
     active_nodes = [@root]
     level.times do |i|
       temp_nodes = active_nodes.clone
@@ -169,11 +122,7 @@ class BinarySearchTree
         active_nodes.shift
       end
     end
-
     health_report = []
-    # 1st value in each array is the value at node
-    # 2nd value find all child nodes including node
-    # 3rd value = 2nd value / total nodes
     active_nodes.each do |node|
       health_report << [node.value, children(node.value) + 1, 100 * (children(node.value) + 1) / (children(@root.value) + 1)]
     end
@@ -182,25 +131,10 @@ class BinarySearchTree
 
   def find_node(value)
     node = @root
-
-    loop do
-      if node.value == value
-        return node
-      end
-      if value < node.value
-        if node.left != nil
-          node = node.left
-        else
-          return false
-        end
-      else
-        if node.right != nil
-          node = node.right
-        else
-          return false
-        end
-      end
+    until node.value == value
+      node = value < node.value ? node.left : node.right
     end
+    node
   end
 
   def children(value)
