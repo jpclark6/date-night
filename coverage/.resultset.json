@@ -1,13 +1,13 @@
 {
   "Unit Tests": {
     "coverage": {
-      "/Users/jus/turing/1module/projects/movie_night/lib/binary_search_tree.rb": [
+      "/Users/meganmcmahon/turing/staff/1810M1/projects/date_night/justin/date-night/lib/binary_search_tree.rb": [
         1,
         1,
         null,
         1,
         1,
-        12,
+        11,
         null,
         null,
         1,
@@ -57,12 +57,28 @@
         2,
         null,
         null,
-        1,
-        11,
-        11,
-        11,
         null,
-        11,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        22,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
         null,
         null,
         1,
@@ -203,17 +219,17 @@
         null,
         null
       ],
-      "/Users/jus/turing/1module/projects/movie_night/lib/node.rb": [
+      "/Users/meganmcmahon/turing/staff/1810M1/projects/date_night/justin/date-night/lib/node.rb": [
         1,
         1,
         null,
         1,
-        144,
-        144,
-        144,
-        144,
-        144,
-        144,
+        145,
+        145,
+        145,
+        145,
+        145,
+        145,
         null,
         null,
         1,
@@ -223,8 +239,21 @@
         0,
         null,
         null
+      ],
+      "/Users/meganmcmahon/turing/staff/1810M1/projects/date_night/justin/date-night/test/node_test.rb": [
+        1,
+        1,
+        1,
+        1,
+        null,
+        1,
+        1,
+        1,
+        1,
+        null,
+        null
       ]
     },
-    "timestamp": 1540254658
+    "timestamp": 1540311155
   }
 }
