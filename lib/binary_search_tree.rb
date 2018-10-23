@@ -6,6 +6,8 @@ class BinarySearchTree
     @root = nil
   end
 
+# This feels like a pretty long method - you could make this more of a CEO method and break out the logic a bit more to clean it up.
+
   def insert(value, title)
     node = @root
     i = 0
@@ -23,6 +25,8 @@ class BinarySearchTree
     end
     i
   end
+
+# When organizing your classes, it helps for readability to have your helper methods below all of the main function methods. (like sort, delete, etc...)
 
   def has_root?
     @root != nil
@@ -52,6 +56,22 @@ class BinarySearchTree
     end
     i
   end
+
+# These max and min methods look great - another thing you could do is make them recursive methods like this:
+
+  # def max(node = @root)
+  #   if node.right.nil?
+  #     node
+  #   else
+  #     max(node.right)
+  #   end
+  # end
+
+# Or like this:
+
+  # def max(node = @root)
+  #   node.right.nil? ? node : max(node.right)
+  # end
 
   def max
     node = @root
