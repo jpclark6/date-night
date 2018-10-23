@@ -190,9 +190,7 @@ class BinarySearchTree
         unless node.right == nil
           active_children << node.right
         end
-        if node.level > max_height
-          max_height = node.level
-        end
+        max_height = node.level
         active_children.shift
       end
     end
